@@ -6,6 +6,7 @@ import { normalizeDate } from '@/lib/utils/normalizeDate'
 export function parseSDCampaigns(csvText: string): SDCampaignRow[] {
   const { data } = Papa.parse<Record<string, string>>(csvText, { header: true, skipEmptyLines: true })
   return data.map((row): SDCampaignRow => ({
+    ...row,
     date: normalizeDate(row.date), campaignId: row.campaignId ?? '',
     campaignName: row.campaignName ?? '',
     impressions: toNum(row.impressions), clicks: toNum(row.clicks),
@@ -21,6 +22,5 @@ export function parseSDCampaigns(csvText: string): SDCampaignRow[] {
     viewClickThroughRate: toNum(row.viewClickThroughRate),
     unitsSoldClicks: toNum(row.unitsSoldClicks),
     detailPageViews: toNum(row.detailPageViews),
-    ...row,
   }))
 }
