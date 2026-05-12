@@ -3,7 +3,16 @@
     "allow": [
       "PowerShell(npx create-next-app@16 --ts --eslint --tailwind --src-dir --app --disable-git --yes .)",
       "Bash(git init *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npm install *)",
+      "Bash(npm test *)",
+      "Bash(Get-ChildItem -Path src -ErrorAction SilentlyContinue)",
+      "Bash(npx tsc *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\SPIGEN_CLAUDE_EDU\\\\SPIGEN_CLAUDE_002\" -Recurse -Depth 2)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\SPIGEN_CLAUDE_EDU\\\\SPIGEN_CLAUDE_002\" -Recurse -Depth 2 | Where-Object {$_.PSIsContainer -or $_.Extension -eq '.ts' -or $_.Extension -eq '.json'} | Select-Object -ExpandProperty FullName | Sort-Object)",
+      "Bash(xargs cat)"
     ]
   }
 }
