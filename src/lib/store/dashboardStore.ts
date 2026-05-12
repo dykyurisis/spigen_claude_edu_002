@@ -1,10 +1,17 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { get, set as idbSet, del } from 'idb-keyval'
 import {
   StorageSchema, DataType,
   SPCampaignRow, SBCampaignRow, SDCampaignRow,
   OrderRow, ListingRow, InventoryRow, TrafficRow, AttributionRow,
 } from '@/types/data'
+
+const idbStorage = createJSONStorage(() => ({
+  getItem: (name: string) => get<string>(name).then(v => v ?? null),
+  setItem: (name: string, value: string) => idbSet(name, value),
+  removeItem: (name: string) => del(name),
+}))
 
 type DataTypeRowMap = {
   sp_campaigns: SPCampaignRow[]; sb_campaigns: SBCampaignRow[]
@@ -46,7 +53,7 @@ export const useDashboardStore = create<DashboardState>()(
     }),
     {
       name: 'spigen-de-dashboard-v1',
-      storage: createJSONStorage(() => localStorage),
+      storage: idbStorage,
       partialize: (s) => ({
         spCampaigns: s.spCampaigns, sbCampaigns: s.sbCampaigns,
         sdCampaigns: s.sdCampaigns, orders: s.orders, listing: s.listing,

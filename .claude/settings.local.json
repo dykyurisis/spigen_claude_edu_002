@@ -14,7 +14,9 @@
       "PowerShell(Get-ChildItem -Path \"C:\\\\SPIGEN_CLAUDE_EDU\\\\SPIGEN_CLAUDE_002\" -Recurse -Depth 2 | Where-Object {$_.PSIsContainer -or $_.Extension -eq '.ts' -or $_.Extension -eq '.json'} | Select-Object -ExpandProperty FullName | Sort-Object)",
       "Bash(xargs cat)",
       "Bash(Get-ChildItem -Path \"C:\\\\SPIGEN_CLAUDE_EDU\\\\SPIGEN_CLAUDE_002\" -Recurse -Directory)",
-      "Bash(Select-Object -First 20)"
+      "Bash(Select-Object -First 20)",
+      "PowerShell(cd \"C:\\\\SPIGEN_CLAUDE_EDU\\\\SPIGEN_CLAUDE_002\"; npx tsc --noEmit; echo \"Exit: $LASTEXITCODE\")",
+      "Bash(npm run *)"
     ]
   }
 }
