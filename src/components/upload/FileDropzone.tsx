@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 import { DataType } from '@/types/data'
 import { parseCSV } from '@/lib/parsers'
 import { useDashboardStore } from '@/lib/store/dashboardStore'
+import { upsertData } from '@/lib/supabase/actions'
 
 interface FileDropzoneProps { dataType: DataType; label: string }
 
@@ -11,19 +12,26 @@ export function FileDropzone({ dataType, label }: FileDropzoneProps) {
   const uploadedAt = useDashboardStore(s => s.uploadedAt[dataType])
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [saving, setSaving] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   function handleFile(file: File) {
     setError(null)
     const reader = new FileReader()
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       try {
         const text = e.target?.result as string
         const rows = parseCSV(dataType, text)
         if (rows.length > 50000) setError(`Warning: ${rows.length} rows loaded (>50,000)`)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setData(dataType, rows as any)
+
+        // Save to Supabase
+        setSaving(true)
+        await upsertData(dataType, rows)
+        setSaving(false)
       } catch (err) {
+        setSaving(false)
         setError(String(err))
       }
     }
@@ -45,9 +53,11 @@ export function FileDropzone({ dataType, label }: FileDropzoneProps) {
         onChange={e => { const f = e.target.files?.[0]; if (f) handleFile(f) }} />
       <div className="flex items-center justify-between">
         <span className="text-sm text-zinc-300">{label}</span>
-        {uploadedAt
-          ? <span className="text-xs text-green-400">✓ {new Date(uploadedAt).toLocaleTimeString()}</span>
-          : <span className="text-xs text-zinc-500">Drop CSV/XLSX</span>
+        {saving
+          ? <span className="text-xs text-blue-400">⏳ Saving...</span>
+          : uploadedAt
+            ? <span className="text-xs text-green-400">✓ {new Date(uploadedAt).toLocaleTimeString()}</span>
+            : <span className="text-xs text-zinc-500">Drop CSV/XLSX</span>
         }
       </div>
       {error && <p className="text-xs text-amber-400 mt-1">{error}</p>}
