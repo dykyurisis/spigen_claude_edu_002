@@ -47,7 +47,7 @@ function orderFromDb(r: Record<string, unknown>): OrderRow {
     shipCity: String(r.ship_city ?? ''),
     shipState: String(r.ship_state ?? ''),
     shipPostalCode: String(r.ship_postal_code ?? ''),
-    isBusinessOrder: Boolean(r.is_business_order),
+    isBusinessOrder: r.is_business_order === true || r.is_business_order === 'true' || r.is_business_order === 1,
   }
 }
 
