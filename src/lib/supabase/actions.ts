@@ -1,7 +1,11 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import type { DataType } from '@/types/data'
+import type {
+  DataType,
+  SPCampaignRow, SBCampaignRow, SDCampaignRow,
+  OrderRow, ListingRow, InventoryRow, TrafficRow, AttributionRow,
+} from '@/types/data'
 import { toDbRows, fromDbRows } from './mappers'
 
 const TYPE_TO_TABLE: Record<DataType, string> = {
@@ -45,13 +49,13 @@ export async function fetchAllData() {
   ])
 
   return {
-    spCampaigns: fromDbRows('sp_campaigns', sp.data ?? []),
-    sbCampaigns: fromDbRows('sb_campaigns', sb.data ?? []),
-    sdCampaigns: fromDbRows('sd_campaigns', sd.data ?? []),
-    orders: fromDbRows('orders', orders.data ?? []),
-    listing: fromDbRows('listing', listing.data ?? []),
-    inventory: fromDbRows('inventory', inventory.data ?? []),
-    traffic: fromDbRows('traffic', traffic.data ?? []),
-    attribution: fromDbRows('attribution', attribution.data ?? []),
+    spCampaigns: fromDbRows<SPCampaignRow>('sp_campaigns', sp.data ?? []),
+    sbCampaigns: fromDbRows<SBCampaignRow>('sb_campaigns', sb.data ?? []),
+    sdCampaigns: fromDbRows<SDCampaignRow>('sd_campaigns', sd.data ?? []),
+    orders: fromDbRows<OrderRow>('orders', orders.data ?? []),
+    listing: fromDbRows<ListingRow>('listing', listing.data ?? []),
+    inventory: fromDbRows<InventoryRow>('inventory', inventory.data ?? []),
+    traffic: fromDbRows<TrafficRow>('traffic', traffic.data ?? []),
+    attribution: fromDbRows<AttributionRow>('attribution', attribution.data ?? []),
   }
 }
