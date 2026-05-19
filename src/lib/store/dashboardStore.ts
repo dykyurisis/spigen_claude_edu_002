@@ -1,17 +1,9 @@
 import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
-import { get, set as idbSet, del } from 'idb-keyval'
 import {
   StorageSchema, DataType,
   SPCampaignRow, SBCampaignRow, SDCampaignRow,
   OrderRow, ListingRow, InventoryRow, TrafficRow, AttributionRow,
 } from '@/types/data'
-
-const idbStorage = createJSONStorage(() => ({
-  getItem: (name: string) => get<string>(name).then(v => v ?? null),
-  setItem: (name: string, value: string) => idbSet(name, value),
-  removeItem: (name: string) => del(name),
-}))
 
 type DataTypeRowMap = {
   sp_campaigns: SPCampaignRow[]; sb_campaigns: SBCampaignRow[]
@@ -23,6 +15,7 @@ interface DashboardState extends StorageSchema {
   setData: <K extends DataType>(type: K, rows: DataTypeRowMap[K]) => void
   setDateRange: (from: string, to: string) => void
   clearAll: () => void
+  hydrateAll: (data: Omit<StorageSchema, 'uploadedAt' | 'dateRange'>) => void
 }
 
 const KEY_MAP: Record<DataType, keyof StorageSchema> = {
@@ -37,29 +30,25 @@ const empty: StorageSchema = {
   uploadedAt: {}, dateRange: null,
 }
 
-export const useDashboardStore = create<DashboardState>()(
-  persist(
-    (set) => ({
-      ...empty,
-      setData: (type, rows) => {
-        const key = KEY_MAP[type]
-        set((s) => ({
-          [key]: rows,
-          uploadedAt: { ...s.uploadedAt, [type]: new Date().toISOString() },
-        } as Partial<DashboardState>))
-      },
-      setDateRange: (from, to) => set({ dateRange: { from, to } }),
-      clearAll: () => set(empty),
-    }),
-    {
-      name: 'spigen-de-dashboard-v1',
-      storage: idbStorage,
-      partialize: (s) => ({
-        spCampaigns: s.spCampaigns, sbCampaigns: s.sbCampaigns,
-        sdCampaigns: s.sdCampaigns, orders: s.orders, listing: s.listing,
-        inventory: s.inventory, traffic: s.traffic, attribution: s.attribution,
-        uploadedAt: s.uploadedAt, dateRange: s.dateRange,
-      }),
-    }
-  )
-)
+export const useDashboardStore = create<DashboardState>()((set) => ({
+  ...empty,
+  setData: (type, rows) => {
+    const key = KEY_MAP[type]
+    set((s) => ({
+      [key]: rows,
+      uploadedAt: { ...s.uploadedAt, [type]: new Date().toISOString() },
+    } as Partial<DashboardState>))
+  },
+  setDateRange: (from, to) => set({ dateRange: { from, to } }),
+  clearAll: () => set(empty),
+  hydrateAll: (data) => set({
+    spCampaigns: data.spCampaigns,
+    sbCampaigns: data.sbCampaigns,
+    sdCampaigns: data.sdCampaigns,
+    orders: data.orders,
+    listing: data.listing,
+    inventory: data.inventory,
+    traffic: data.traffic,
+    attribution: data.attribution,
+  }),
+}))
