@@ -8,7 +8,8 @@ export async function GET(request: NextRequest) {
   const token_hash = searchParams.get('token_hash')
   const type = searchParams.get('type') as EmailOtpType | null
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/overview'
+  const rawNext = searchParams.get('next') ?? '/overview'
+  const next = rawNext.startsWith('/') && !rawNext.startsWith('//') ? rawNext : '/overview'
 
   const supabase = await createClient()
 
@@ -24,5 +25,5 @@ export async function GET(request: NextRequest) {
     if (!error) redirect(next)
   }
 
-  redirect('/login?error=Authentication+failed')
+  redirect(`/login?error=${encodeURIComponent('Authentication failed')}`)
 }
