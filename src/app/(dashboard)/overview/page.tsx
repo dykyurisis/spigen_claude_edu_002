@@ -74,7 +74,7 @@ export default function OverviewPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-xl font-semibold text-white">Overview</h1>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <KpiCard title="Total Revenue" value={`€${totalRevenue.toLocaleString('de-DE', { maximumFractionDigits: 0 })}`} />
         <KpiCard title="Total Ad Spend" value={`€${totalAdSpend.toLocaleString('de-DE', { maximumFractionDigits: 0 })}`} />
         <KpiCard title="Blended ROAS" value={blendedROAS.toFixed(2)} unit="x" />
@@ -82,7 +82,7 @@ export default function OverviewPage() {
         <KpiCard title="Avg CVR" value={avgCVR.toFixed(1)} unit="%" />
         <KpiCard title="Buy Box %" value={avgBuyBox.toFixed(1)} unit="%" />
       </div>
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-zinc-900 rounded-xl p-5 border border-zinc-800">
           <h2 className="text-sm font-medium text-zinc-400 mb-3">Revenue by Channel</h2>
           <ResponsiveContainer width="100%" height={240}>

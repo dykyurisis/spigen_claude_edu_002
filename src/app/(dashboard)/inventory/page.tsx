@@ -65,7 +65,7 @@ export default function InventoryPage() {
   return (
     <div className="space-y-4">
       <h1 className="text-xl font-semibold text-white">Inventory</h1>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <KpiCard title="At Risk (< 14 days)" value={dangerCount} />
         <KpiCard title="Low Stock (14–30 days)" value={warningCount} />
         <KpiCard title="Inbound Shipments" value={inboundCount} />

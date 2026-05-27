@@ -63,7 +63,7 @@ export default function AttributionPage() {
       <h1 className="text-xl font-semibold text-white">External Attribution</h1>
 
       {/* Publisher Cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {pubMetrics.map(m => (
           <div key={m.publisher} className="bg-zinc-900 rounded-xl p-5 border border-zinc-800 space-y-2">
             <p className="text-sm font-semibold text-white">{m.publisher}</p>
@@ -77,7 +77,7 @@ export default function AttributionPage() {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Promoted vs Brand Halo Donut */}
         <div className="bg-zinc-900 rounded-xl p-5 border border-zinc-800">
           <h2 className="text-sm font-medium text-zinc-400 mb-3">Promoted vs Brand Halo</h2>
