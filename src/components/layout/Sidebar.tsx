@@ -13,7 +13,7 @@ const NAV = [
   { href: '/attribution', label: 'Attribution' },
 ]
 
-export function Sidebar() {
+export function Sidebar({ footer }: { footer?: React.ReactNode }) {
   const pathname = usePathname()
   const [uploadOpen, setUploadOpen] = useState(false)
   return (
@@ -46,6 +46,7 @@ export function Sidebar() {
             Upload Data
           </button>
         </div>
+        {footer}
       </aside>
       <UploadModal open={uploadOpen} onClose={() => setUploadOpen(false)} />
     </>
