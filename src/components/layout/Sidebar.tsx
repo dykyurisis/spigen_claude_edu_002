@@ -22,7 +22,7 @@ export function Sidebar({ footer }: { footer?: React.ReactNode }) {
         <div className="px-4 py-5 text-sm font-semibold text-zinc-300 border-b border-zinc-800">
           Spigen DE Analytics
         </div>
-        <nav className="flex-1 px-2 py-4 space-y-1">
+        <nav className="flex-1 overflow-y-auto px-2 py-4 space-y-1">
           {NAV.map(({ href, label }) => (
             <Link
               key={href}
@@ -37,16 +37,18 @@ export function Sidebar({ footer }: { footer?: React.ReactNode }) {
             </Link>
           ))}
         </nav>
-        <DateRangePicker />
-        <div className="p-4 border-t border-zinc-800">
-          <button
-            onClick={() => setUploadOpen(true)}
-            className="w-full px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium transition-colors"
-          >
-            Upload Data
-          </button>
+        <div className="shrink-0">
+          <DateRangePicker />
+          <div className="p-4 border-t border-zinc-800">
+            <button
+              onClick={() => setUploadOpen(true)}
+              className="w-full px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium transition-colors"
+            >
+              Upload Data
+            </button>
+          </div>
+          {footer}
         </div>
-        {footer}
       </aside>
       <UploadModal open={uploadOpen} onClose={() => setUploadOpen(false)} />
     </>

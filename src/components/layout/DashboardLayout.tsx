@@ -1,3 +1,6 @@
+// IMPORTANT: This component must remain a Server Component (no 'use client').
+// SidebarUserInfo is an async Server Component passed as a prop to the Sidebar Client Component.
+// Adding 'use client' here would break the async Server Component pattern.
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
 import { SidebarUserInfo } from './SidebarUserInfo'

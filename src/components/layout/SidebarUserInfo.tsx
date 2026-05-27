@@ -7,6 +7,7 @@ export async function SidebarUserInfo() {
   const { data, error } = await supabase.auth.getUser()
   if (error) console.error('[SidebarUserInfo] getUser failed:', error.message)
   const user = data?.user
+  if (!user) return null
 
   // Generate initials from email (e.g., "john@example.com" → "J")
   const initials = user?.email ? user.email[0].toUpperCase() : '?'
@@ -15,9 +16,10 @@ export async function SidebarUserInfo() {
   const displayEmail = email.length > 22 ? email.slice(0, 22) + '…' : email
 
   return (
-    <div className="border-t border-zinc-800 p-3">
+    <div className="p-3">
       <Link
         href="/profile"
+        aria-label="Go to My Profile"
         className="flex items-center gap-2 rounded-lg px-2 py-2 hover:bg-zinc-800/50 transition-colors group"
       >
         {/* Avatar circle with initials */}
@@ -25,7 +27,7 @@ export async function SidebarUserInfo() {
           <span className="text-xs font-semibold text-pink-400">{initials}</span>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-zinc-300 truncate group-hover:text-zinc-100 transition-colors">
+          <p aria-hidden="true" className="text-xs text-zinc-300 truncate group-hover:text-zinc-100 transition-colors">
             {displayEmail}
           </p>
           <p className="text-[10px] text-zinc-500">My Profile</p>
