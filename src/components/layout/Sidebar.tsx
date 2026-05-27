@@ -20,28 +20,23 @@ export function Sidebar({ footer }: { footer?: React.ReactNode }) {
   const mobileOpen = useDashboardStore(s => s.mobileSidebarOpen)
   const closeMobileSidebar = useDashboardStore(s => s.closeMobileSidebar)
 
-  // Close sidebar when navigating on mobile
-  const handleNavClick = () => {
-    closeMobileSidebar()
-  }
-
   return (
     <>
       {/* Backdrop overlay — mobile only */}
-      {mobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={closeMobileSidebar}
-          aria-hidden="true"
-        />
-      )}
+      <div
+        className={`fixed inset-0 z-40 bg-black/50 md:hidden transition-opacity duration-300 ${
+          mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={closeMobileSidebar}
+        aria-hidden="true"
+      />
 
       <aside
         className={`
           fixed inset-y-0 left-0 z-50 w-64 flex flex-col bg-zinc-900 border-r border-zinc-800
           transition-transform duration-300 ease-in-out
           ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
-          md:relative md:translate-x-0 md:w-56 md:shrink-0 md:z-auto
+          md:relative md:translate-x-0 md:w-56 md:shrink-0 md:z-auto md:h-full
         `}
       >
         {/* Header row with title + close button (mobile) */}
@@ -64,7 +59,7 @@ export function Sidebar({ footer }: { footer?: React.ReactNode }) {
             <Link
               key={href}
               href={href}
-              onClick={handleNavClick}
+              onClick={closeMobileSidebar}
               className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                 pathname === href || pathname.startsWith(href + '/')
                   ? 'bg-pink-600/20 text-pink-400 font-medium'
