@@ -29,7 +29,7 @@ export function Sidebar() {
               href={href}
               className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                 pathname === href || pathname.startsWith(href + '/')
-                  ? 'bg-zinc-800 text-white font-medium'
+                  ? 'bg-pink-600/20 text-pink-400 font-medium'
                   : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
               }`}
             >
