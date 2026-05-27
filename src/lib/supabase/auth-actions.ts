@@ -79,18 +79,20 @@ export async function signOut(): Promise<void> {
 }
 
 export async function updatePassword(formData: FormData): Promise<void> {
+  const currentPasswordVal = formData.get('currentPassword')
   const newPasswordVal = formData.get('newPassword')
   const confirmPasswordVal = formData.get('confirmPassword')
 
-  if (!newPasswordVal || !confirmPasswordVal) {
+  if (!currentPasswordVal || !newPasswordVal || !confirmPasswordVal) {
     redirect('/profile?error=' + encodeURIComponent('All password fields are required'))
   }
 
+  const currentPassword = currentPasswordVal as string
   const newPassword = newPasswordVal as string
   const confirmPassword = confirmPasswordVal as string
 
   if (newPassword !== confirmPassword) {
-    redirect('/profile?error=' + encodeURIComponent('Passwords do not match'))
+    redirect('/profile?error=' + encodeURIComponent('New passwords do not match'))
   }
 
   if (newPassword.length < 6) {
@@ -98,10 +100,27 @@ export async function updatePassword(formData: FormData): Promise<void> {
   }
 
   const supabase = await createClient()
+
+  // Verify current identity before allowing password change
+  const { data: userData } = await supabase.auth.getUser()
+  if (!userData.user?.email) {
+    redirect('/login')
+  }
+
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+    email: userData.user.email,
+    password: currentPassword,
+  })
+
+  if (signInError) {
+    redirect('/profile?error=' + encodeURIComponent('Current password is incorrect'))
+  }
+
   const { error } = await supabase.auth.updateUser({ password: newPassword })
 
   if (error) {
-    redirect('/profile?error=' + encodeURIComponent(error.message))
+    console.error('[updatePassword] updateUser failed:', error.message)
+    redirect('/profile?error=' + encodeURIComponent('Password update failed. Please try again.'))
   }
 
   redirect('/profile?message=' + encodeURIComponent('Password updated successfully'))

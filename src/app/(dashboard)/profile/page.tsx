@@ -18,8 +18,8 @@ export default async function ProfilePage({ searchParams }: Props) {
 
   // Generate initials (up to 2 chars)
   const fullName = user.user_metadata?.full_name as string | undefined
-  const initials = fullName
-    ? fullName.split(' ').map((n: string) => n[0]).slice(0, 2).join('').toUpperCase()
+  const initials = fullName?.trim()
+    ? fullName.trim().split(/\s+/).map((n: string) => n[0]).slice(0, 2).join('').toUpperCase()
     : user.email?.[0].toUpperCase() ?? '?'
 
   // Format user ID (show first 8 chars)
@@ -83,6 +83,20 @@ export default async function ProfilePage({ searchParams }: Props) {
       <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6">
         <h2 className="text-sm font-semibold text-zinc-300 mb-4">Change Password</h2>
         <form action={updatePassword} className="space-y-4">
+          <div>
+            <label htmlFor="currentPassword" className="block text-xs text-zinc-400 mb-1.5">
+              Current Password
+            </label>
+            <input
+              id="currentPassword"
+              name="currentPassword"
+              type="password"
+              required
+              autoComplete="current-password"
+              className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              placeholder="••••••••"
+            />
+          </div>
           <div>
             <label htmlFor="newPassword" className="block text-xs text-zinc-400 mb-1.5">
               New Password
