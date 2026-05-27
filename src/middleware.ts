@@ -35,7 +35,11 @@ export async function middleware(request: NextRequest) {
   if (pathname === '/') {
     const url = request.nextUrl.clone()
     url.pathname = user ? '/overview' : '/login'
-    return NextResponse.redirect(url)
+    const redirectResponse = NextResponse.redirect(url)
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      redirectResponse.cookies.set(cookie.name, cookie.value)
+    })
+    return redirectResponse
   }
 
   // Not authenticated → redirect to /login (but skip /login and /auth/* paths)
