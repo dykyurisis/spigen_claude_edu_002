@@ -16,6 +16,9 @@ interface DashboardState extends StorageSchema {
   setDateRange: (from: string, to: string) => void
   clearAll: () => void
   hydrateAll: (data: Omit<StorageSchema, 'uploadedAt' | 'dateRange'>) => void
+  mobileSidebarOpen: boolean
+  openMobileSidebar: () => void
+  closeMobileSidebar: () => void
 }
 
 const KEY_MAP: Record<DataType, keyof StorageSchema> = {
@@ -51,4 +54,7 @@ export const useDashboardStore = create<DashboardState>()((set) => ({
     traffic: data.traffic,
     attribution: data.attribution,
   }),
+  mobileSidebarOpen: false,
+  openMobileSidebar: () => set({ mobileSidebarOpen: true }),
+  closeMobileSidebar: () => set({ mobileSidebarOpen: false }),
 }))
