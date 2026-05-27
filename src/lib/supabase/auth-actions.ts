@@ -77,3 +77,32 @@ export async function signOut(): Promise<void> {
   if (error) console.error('[signOut] failed:', error.message)
   redirect('/login')
 }
+
+export async function updatePassword(formData: FormData): Promise<void> {
+  const newPasswordVal = formData.get('newPassword')
+  const confirmPasswordVal = formData.get('confirmPassword')
+
+  if (!newPasswordVal || !confirmPasswordVal) {
+    redirect('/profile?error=' + encodeURIComponent('All password fields are required'))
+  }
+
+  const newPassword = newPasswordVal as string
+  const confirmPassword = confirmPasswordVal as string
+
+  if (newPassword !== confirmPassword) {
+    redirect('/profile?error=' + encodeURIComponent('Passwords do not match'))
+  }
+
+  if (newPassword.length < 6) {
+    redirect('/profile?error=' + encodeURIComponent('Password must be at least 6 characters'))
+  }
+
+  const supabase = await createClient()
+  const { error } = await supabase.auth.updateUser({ password: newPassword })
+
+  if (error) {
+    redirect('/profile?error=' + encodeURIComponent(error.message))
+  }
+
+  redirect('/profile?message=' + encodeURIComponent('Password updated successfully'))
+}
