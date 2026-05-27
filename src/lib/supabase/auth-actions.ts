@@ -51,11 +51,16 @@ export async function signInWithOtp(formData: FormData): Promise<void> {
   }
   const email = emailVal as string
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
+  if (!siteUrl) {
+    redirect('/login?error=' + encodeURIComponent('Server configuration error: NEXT_PUBLIC_SITE_URL is not set'))
+  }
+
   const supabase = await createClient()
   const { error } = await supabase.auth.signInWithOtp({
     email,
     options: {
-      emailRedirectTo: process.env.NEXT_PUBLIC_SITE_URL + '/auth/confirm',
+      emailRedirectTo: `${siteUrl}/auth/confirm`,
     },
   })
 

@@ -12,8 +12,10 @@ interface LoginPageProps {
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams
-  const error = params.error
-  const message = params.message
+  const rawError = params.error
+  const rawMessage = params.message
+  const error = typeof rawError === 'string' ? rawError.slice(0, 200) : undefined
+  const message = typeof rawMessage === 'string' ? rawMessage.slice(0, 200) : undefined
   const mode = params.mode // 'signup' or undefined
   const tab = params.tab   // 'magic' or undefined
 
@@ -48,7 +50,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           {/* Tab Navigation */}
           <div className="flex border-b border-zinc-800 mb-6">
             <Link
-              href={isSignUp ? '/login' : `/login${isMagicTab ? '' : ''}`}
+              href="/login"
               className={`px-4 pb-3 text-sm font-medium transition-colors ${
                 !isMagicTab
                   ? 'border-b-2 border-pink-500 text-pink-400'
@@ -110,6 +112,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                     name="email"
                     placeholder="you@example.com"
                     required
+                    autoComplete="email"
                     className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
                   />
                 </div>
@@ -126,6 +129,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                     name="password"
                     placeholder="••••••••"
                     required
+                    autoComplete={isSignUp ? 'new-password' : 'current-password'}
+                    minLength={isSignUp ? 6 : undefined}
                     className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
                   />
                 </div>
@@ -159,6 +164,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                     name="email"
                     placeholder="you@example.com"
                     required
+                    autoComplete="email"
                     className="w-full rounded-lg bg-zinc-800 border border-zinc-700 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-pink-500"
                   />
                 </div>
