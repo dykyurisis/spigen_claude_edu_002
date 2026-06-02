@@ -16,6 +16,7 @@
     "@tanstack/react-table": "^8.21.3",
     "@types/papaparse": "^5.5.2",
     "date-fns": "^4.1.0",
+    "googleapis": "^173.0.0",
     "idb-keyval": "^6.2.2",
     "next": "16.2.6",
     "papaparse": "^5.5.3",

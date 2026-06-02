@@ -13,6 +13,7 @@ __MACOSX
 docs
 .claude
 .vercel
+.env
 .env.local
 *.tsbuildinfo
 npm-debug.log*
