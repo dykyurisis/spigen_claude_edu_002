@@ -16,7 +16,29 @@
       "Bash(Get-ChildItem -Path \"C:\\\\SPIGEN_CLAUDE_EDU\\\\SPIGEN_CLAUDE_002\" -Recurse -Directory)",
       "Bash(Select-Object -First 20)",
       "PowerShell(cd \"C:\\\\SPIGEN_CLAUDE_EDU\\\\SPIGEN_CLAUDE_002\"; npx tsc --noEmit; echo \"Exit: $LASTEXITCODE\")",
-      "Bash(npm run *)"
+      "Bash(npm run *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(git rm *)",
+      "mcp__supabase__execute_sql",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('next:', p.dependencies.next, 'react:', p.dependencies.react\\)\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); deps={**d.get\\('dependencies',{}\\),**d.get\\('devDependencies',{}\\)}; keys=['@supabase/ssr','@supabase/supabase-js','next']; [print\\(f'{k}: {deps.get\\(k,\\\\\"not found\\\\\"\\)}'\\) for k in keys]\")",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('tw dep:', p.dependencies?.tailwindcss\\); console.log\\('tw devDep:', p.devDependencies?.tailwindcss\\);\")",
+      "Bash(powershell -Command \"\\(New-Object Net.WebClient\\).DownloadFile\\('https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe', 'C:\\\\Temp\\\\GoogleCloudSDKInstaller.exe'\\)\")",
+      "PowerShell(if \\(-not \\(Test-Path \"C:\\\\Temp\"\\)\\) { New-Item -ItemType Directory -Force \"C:\\\\Temp\" }; \\(New-Object Net.WebClient\\).DownloadFile\\('https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe', 'C:\\\\Temp\\\\GoogleCloudSDKInstaller.exe'\\); Write-Output \"Downloaded: $\\(\\(Get-Item 'C:\\\\Temp\\\\GoogleCloudSDKInstaller.exe'\\).Length\\) bytes\")",
+      "PowerShell(Start-Process -FilePath \"C:\\\\Temp\\\\GoogleCloudSDKInstaller.exe\" -ArgumentList \"/S\", \"/allusers\" -Wait -PassThru)",
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); gcloud version 2>&1)",
+      "PowerShell(winget --version)",
+      "PowerShell(gcloud --version 2>$null; if \\(-not $?\\) { & \"$env:LOCALAPPDATA\\\\Google\\\\Cloud SDK\\\\google-cloud-sdk\\\\bin\\\\gcloud.cmd\" --version 2>$null })",
+      "PowerShell($env:Path = [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"Machine\"\\) + \";\" + [System.Environment]::GetEnvironmentVariable\\(\"Path\",\"User\"\\); gcloud --version)",
+      "PowerShell(Get-ChildItem src -Recurse -File | ForEach-Object { $_.FullName.Replace\\(\"$PWD\\\\\", ''\\) } | Select-Object -First 80)",
+      "PowerShell($f = \"$env:USERPROFILE\\\\.claude\\\\projects\\\\C--SPIGEN-CLAUDE-EDU-SPIGEN-CLAUDE-002\\\\7bed82ed-8b88-454d-b0fd-682351bb06af.jsonl\"; $lines = Get-Content $f; $out = @\\(\\); foreach \\($l in $lines\\) { try { $j = $l | ConvertFrom-Json } catch { continue }; if \\($j.type -eq 'user' -and $j.message.content -is [string]\\) { $out += \"USER: \" + $j.message.content.Substring\\(0, [Math]::Min\\(300, $j.message.content.Length\\)\\) } }; $out | Select-Object -Last 15)",
+      "PowerShell(gcloud config list 2>$null; if \\(-not $?\\) { & \"$env:LOCALAPPDATA\\\\Google\\\\Cloud SDK\\\\google-cloud-sdk\\\\bin\\\\gcloud.cmd\" config list })",
+      "PowerShell(git add AGENTS.md .claude/settings.local.json)",
+      "PowerShell(git push)"
     ]
   }
 }
