@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# .env.production contains only public NEXT_PUBLIC_* values (needed for CI builds);
+# secrets (service account key, SYNC_SECRET) live in .env which stays ignored.
+!.env.production
 
 # vercel
 .vercel

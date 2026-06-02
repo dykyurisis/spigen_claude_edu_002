@@ -1,0 +1,37 @@
+# CI/CD: GitHub main 푸시 → Cloud Build → Cloud Run 배포
+# Trigger: deploy-on-push (asia-northeast3)
+steps:
+  # 1. Docker 이미지 빌드 (NEXT_PUBLIC_* 값은 커밋된 .env.production에서 주입)
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_IMAGE}:${COMMIT_SHA}'
+      - '-t'
+      - '${_IMAGE}:latest'
+      - '.'
+
+  # 2. Artifact Registry에 푸시
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '--all-tags', '${_IMAGE}']
+
+  # 3. Cloud Run 배포 (기존 env vars / service account 설정은 그대로 유지됨)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'spigen-dashboard'
+      - '--image=${_IMAGE}:${COMMIT_SHA}'
+      - '--region=asia-northeast3'
+      - '--quiet'
+
+substitutions:
+  _IMAGE: 'asia-northeast3-docker.pkg.dev/spigen-calude-edu-002/cloud-run-source-deploy/spigen-dashboard'
+
+images:
+  - '${_IMAGE}:${COMMIT_SHA}'
+  - '${_IMAGE}:latest'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
