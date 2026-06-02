@@ -4,6 +4,7 @@
 import { Sidebar } from './Sidebar'
 import { TopBar } from './TopBar'
 import { SidebarUserInfo } from './SidebarUserInfo'
+import { ChatWidget } from '@/components/chat/ChatWidget'
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
         <TopBar />
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
+      <ChatWidget />
     </div>
   )
 }
