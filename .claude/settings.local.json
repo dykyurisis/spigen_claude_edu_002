@@ -46,7 +46,12 @@
       "PowerShell([Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $token = gcloud auth print-access-token --impersonate-service-account=gws-sheets@spigen-calude-edu-002.iam.gserviceaccount.com; try { Invoke-RestMethod -Uri \"https://sheets.googleapis.com/v4/spreadsheets/1IzFND4yIL4lme2hit47_x03GY-kYZHrpwXHlkJUgK1w/values/%EC%A3%BC%EB%AC%B8!A1:F3\" -Headers @{Authorization = \"Bearer $token\"} } catch { $reader = New-Object System.IO.StreamReader\\($_.Exception.Response.GetResponseStream\\(\\)\\); $reader.ReadToEnd\\(\\) })",
       "PowerShell(npx skills add vercel-labs/agent-skills)",
       "PowerShell(git fetch origin)",
-      "PowerShell(git push origin main)"
+      "PowerShell(git push origin main)",
+      "mcp__supabase__get_advisors",
+      "mcp__supabase__list_tables",
+      "PowerShell(node scripts\\\\repro-safety.mjs)",
+      "PowerShell(Select-String -Path node_modules\\\\next\\\\dist\\\\docs\\\\01-app\\\\01-getting-started\\\\07-mutating-data.md -Pattern 'use server','async function','must be async','error' -SimpleMatch:$false | Select-Object -First 15 | ForEach-Object { \"$\\($_.LineNumber\\): $\\($_.Line\\)\" })",
+      "PowerShell(Remove-Item src\\\\lib\\\\gemini\\\\repro-safety.manual.test.ts, scripts\\\\repro-safety.mjs -Confirm:$false; if \\(\\(Get-ChildItem scripts -ErrorAction SilentlyContinue | Measure-Object\\).Count -eq 0\\) { Remove-Item scripts -Confirm:$false })"
     ]
   }
 }
