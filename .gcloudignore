@@ -1,0 +1,19 @@
+# Files excluded from the source upload to Cloud Build.
+# NOTE: .env.production is intentionally NOT ignored — it provides
+# NEXT_PUBLIC_* values at build time (publishable keys only).
+.git
+.gitignore
+node_modules
+.next
+out
+coverage
+build
+data
+__MACOSX
+docs
+.claude
+.vercel
+.env.local
+*.tsbuildinfo
+npm-debug.log*
+README.md
