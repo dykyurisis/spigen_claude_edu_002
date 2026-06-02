@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { signOut } from '@/lib/supabase/auth-actions'
 import { MobileMenuButton } from './MobileMenuButton'
+import { SyncButton } from './SyncButton'
 
 export async function TopBar() {
   const supabase = await createClient()
@@ -16,6 +17,7 @@ export async function TopBar() {
       {user?.email && (
         <span className="hidden sm:block text-xs text-zinc-400 truncate max-w-[180px]">{user.email}</span>
       )}
+      <SyncButton />
       <form action={signOut}>
         <button
           type="submit"
