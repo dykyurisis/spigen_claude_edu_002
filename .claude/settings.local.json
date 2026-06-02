@@ -38,7 +38,12 @@
       "PowerShell($f = \"$env:USERPROFILE\\\\.claude\\\\projects\\\\C--SPIGEN-CLAUDE-EDU-SPIGEN-CLAUDE-002\\\\7bed82ed-8b88-454d-b0fd-682351bb06af.jsonl\"; $lines = Get-Content $f; $out = @\\(\\); foreach \\($l in $lines\\) { try { $j = $l | ConvertFrom-Json } catch { continue }; if \\($j.type -eq 'user' -and $j.message.content -is [string]\\) { $out += \"USER: \" + $j.message.content.Substring\\(0, [Math]::Min\\(300, $j.message.content.Length\\)\\) } }; $out | Select-Object -Last 15)",
       "PowerShell(gcloud config list 2>$null; if \\(-not $?\\) { & \"$env:LOCALAPPDATA\\\\Google\\\\Cloud SDK\\\\google-cloud-sdk\\\\bin\\\\gcloud.cmd\" config list })",
       "PowerShell(git add AGENTS.md .claude/settings.local.json)",
-      "PowerShell(git push)"
+      "PowerShell(git push)",
+      "PowerShell(gcloud config get-value project)",
+      "PowerShell(gcloud config get-value account)",
+      "PowerShell(gcloud iam service-accounts keys create \"$env:TEMP\\\\gws-sheets-key.json\" --iam-account=gws-sheets@spigen-calude-edu-002.iam.gserviceaccount.com --project=spigen-calude-edu-002)",
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell([Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $token = gcloud auth print-access-token --impersonate-service-account=gws-sheets@spigen-calude-edu-002.iam.gserviceaccount.com; try { Invoke-RestMethod -Uri \"https://sheets.googleapis.com/v4/spreadsheets/1IzFND4yIL4lme2hit47_x03GY-kYZHrpwXHlkJUgK1w/values/%EC%A3%BC%EB%AC%B8!A1:F3\" -Headers @{Authorization = \"Bearer $token\"} } catch { $reader = New-Object System.IO.StreamReader\\($_.Exception.Response.GetResponseStream\\(\\)\\); $reader.ReadToEnd\\(\\) })"
     ]
   }
 }
