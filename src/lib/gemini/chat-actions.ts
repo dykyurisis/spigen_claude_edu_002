@@ -1,5 +1,6 @@
 'use server'
 
+import { HarmCategory, HarmBlockThreshold, FinishReason } from '@google/genai'
 import { createClient } from '@/lib/supabase/server'
 import { fetchAllData } from '@/lib/supabase/actions'
 import { buildDataContext } from './buildContext'
@@ -16,6 +17,16 @@ const SYSTEM_INSTRUCTION = `당신은 Spigen 독일(Amazon.de) 광고/판매 데
 - 금액은 EUR(€), 날짜는 YYYY-MM 형식입니다.
 - 계산이 필요하면 제공된 합계/평균/ROAS 값을 그대로 사용하고, 임의로 여러 행을 다시 합산하지 마세요.
 - 개별 주문 한 건 같은 행 수준 상세는 표에 포함되어 있지 않습니다.`
+
+// Internal business-data Q&A is benign, but Gemini's default safety thresholds
+// occasionally false-positive on product/campaign vocabulary (e.g. "Tough
+// Armor", "Gunmetal", "Bullet") and block the response. Relax them fully.
+const SAFETY_SETTINGS = [
+  HarmCategory.HARM_CATEGORY_HARASSMENT,
+  HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+  HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+  HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+].map(category => ({ category, threshold: HarmBlockThreshold.BLOCK_NONE }))
 
 /** Ask Gemini a question about the dashboard data. Requires a logged-in user. */
 export async function askGemini(question: string, history: ChatTurn[]): Promise<string> {
@@ -43,10 +54,20 @@ export async function askGemini(question: string, history: ChatTurn[]): Promise<
       config: {
         systemInstruction: `${SYSTEM_INSTRUCTION}\n\n# 데이터 집계 표\n\n${context}`,
         temperature: 0.2,
+        safetySettings: SAFETY_SETTINGS,
       },
     })
 
-    return response.text ?? '답변을 생성하지 못했습니다. 다시 시도해 주세요.'
+    if (response.text) return response.text
+
+    // Empty response — log WHY so blocked requests are diagnosable.
+    const blockReason = response.promptFeedback?.blockReason
+    const finishReason = response.candidates?.[0]?.finishReason
+    console.error('[askGemini] empty response:', { blockReason, finishReason })
+    if (blockReason || finishReason === FinishReason.SAFETY || finishReason === FinishReason.PROHIBITED_CONTENT) {
+      return '질문이 AI 안전 필터에 차단되었습니다. 표현을 바꿔 다시 질문해 주세요.'
+    }
+    return '답변을 생성하지 못했습니다. 다시 시도해 주세요.'
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e)
     console.error('[askGemini] failed:', msg)
