@@ -43,7 +43,8 @@
       "PowerShell(gcloud config get-value account)",
       "PowerShell(gcloud iam service-accounts keys create \"$env:TEMP\\\\gws-sheets-key.json\" --iam-account=gws-sheets@spigen-calude-edu-002.iam.gserviceaccount.com --project=spigen-calude-edu-002)",
       "mcp__Claude_Preview__preview_start",
-      "PowerShell([Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $token = gcloud auth print-access-token --impersonate-service-account=gws-sheets@spigen-calude-edu-002.iam.gserviceaccount.com; try { Invoke-RestMethod -Uri \"https://sheets.googleapis.com/v4/spreadsheets/1IzFND4yIL4lme2hit47_x03GY-kYZHrpwXHlkJUgK1w/values/%EC%A3%BC%EB%AC%B8!A1:F3\" -Headers @{Authorization = \"Bearer $token\"} } catch { $reader = New-Object System.IO.StreamReader\\($_.Exception.Response.GetResponseStream\\(\\)\\); $reader.ReadToEnd\\(\\) })"
+      "PowerShell([Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; $token = gcloud auth print-access-token --impersonate-service-account=gws-sheets@spigen-calude-edu-002.iam.gserviceaccount.com; try { Invoke-RestMethod -Uri \"https://sheets.googleapis.com/v4/spreadsheets/1IzFND4yIL4lme2hit47_x03GY-kYZHrpwXHlkJUgK1w/values/%EC%A3%BC%EB%AC%B8!A1:F3\" -Headers @{Authorization = \"Bearer $token\"} } catch { $reader = New-Object System.IO.StreamReader\\($_.Exception.Response.GetResponseStream\\(\\)\\); $reader.ReadToEnd\\(\\) })",
+      "PowerShell(npx skills add vercel-labs/agent-skills)"
     ]
   }
 }
